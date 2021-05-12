@@ -16,7 +16,7 @@ Base.metadata.create_all(engine)
 
 @app.get("/repositories/")
 async def read_item(username: str, from_local: Optional[bool]=False):
-    return ReposRequests.get_repos(username, from_local)
+    return ReposRequests.get_repositories(username, from_local)
 
 
 @app.get("/repositories/{repo}")

@@ -2,8 +2,23 @@ import requests
 
 from webserver.data.database import local_session
 from webserver.data.dao import get_repos_from_user
-from webserver.data.dao import save_new_repo
+from webserver.data.dao import save_new_repo, get_user_data
 
+def get_repositories(username, from_local):
+    id = get_user_id(username, from_local)
+    repositories = get_repos(username, from_local)
+    response_json = {
+        "id":  id,
+        "username": username,
+        "repositories": repositories
+    }
+    return response_json
+
+def get_user_id(username, from_local):
+    if(from_local):
+        return get_user_data(local_session(), username).id
+    response = requests.get(f'https://api.github.com/users/{username}')
+    return response.json()["id"]
 
 def get_repos(username, from_local):
     repositories = []
